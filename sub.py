@@ -1,19 +1,25 @@
 import time
 import reac
 
-modifs = {"temp": None}
-
-def plop(mess):
+def react(mess):
     mess = mess[0]
     mess = mess.decode()
-    modifs["temp"] = mess.split(" ")[1]
+    t = globals()["temp"]
+    t.a = mess.split(" ")[1]
 
-a, l = reac.get_background_io_loop(plop)
+a, l = reac.get_background_io_loop(react)
+
 a.start()
 
+class lol():
+    def __init__(self):
+        self.a = None
+
+
 try:
+    temp = lol()
     while 1:
-        print(modifs["temp"])
+        print(temp.a)
         time.sleep(0.1)
 except KeyboardInterrupt:
     l.stop()
