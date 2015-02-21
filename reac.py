@@ -3,7 +3,7 @@ from zmq.eventloop import ioloop, zmqstream
 import threading
 
 
-port = "5556"
+port = "9999"
 
 
 # Socket to talk to server

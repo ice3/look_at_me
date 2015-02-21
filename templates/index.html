@@ -45,8 +45,10 @@
 						value: 0, 
 						wodth: 1, 
 						color: '#808080'
-					}]
-				},
+					}], 
+                    min: -1.5,
+                    max: 1.5
+                },
 				tooltip: {
 					valueSuffix: '°C'
 				},
@@ -99,6 +101,13 @@
 				chart.redraw();
                 // redraw = true;
 			});
+
+            var slider = document.getElementById('slider')
+            slider.onchange =function(change) {
+                socket.emit('control', {data: slider.value});
+                document.getElementById('dispVal').innerHTML=slider.value;
+            }
+
 		});
 
 	</script>
@@ -111,4 +120,9 @@
 
 	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 	<button id="button" class="autocompare">Update first point</button>
+
+     <form>
+        <input id="slider" type="range" name="points" min="0" max="10">
+        <p id="dispVal"> 1 <p>
+    </form>
 </body>
