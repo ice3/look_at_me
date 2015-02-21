@@ -26,24 +26,20 @@ socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
 def messages_gateway():
 	while True:
-		m = socket.recv_string()
-		m = m.decode()
-		zip_code, temp = m.split(" ")
-		print(temp)
-		socketio.emit("graph", {"data": int(temp)}, namespace='/test')
+		t = time.time()
+		res = []
+		while time.time() - t < 0.15:
+			m = socket.recv_string()
+			m = m.decode()
+			zip_code, temp = m.split(" ")
+			print(temp)
+			res.append([time.time(), float(temp)])
+		print(res)
+		socketio.emit("graph", {"datas": res}, namespace='/test')
 		if m == 'quit':
 			print 'exiting.'
 			break
 
-def background_thread():
-	"""Example of how to send server generated events to clients."""
-	count = 0
-	while True:
-		time.sleep(1)
-		count += 1
-		socketio.emit('graph',
-		{'data': 'Server generated event', 'count': count},
-		namespace='/test')
 
 @app.route("/")
 def index():

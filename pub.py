@@ -2,6 +2,7 @@ import zmq
 import random
 import sys
 import time
+import math
 
 port = "5556"
 if len(sys.argv) > 1:
@@ -12,11 +13,12 @@ context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:{}".format(port))
 
+i = 0.0
 while True:
-    topic = random.randrange(9999,10005)
-    messagedata = random.randrange(1,215) - 80
-    print("{} {}".format(topic, messagedata))
-    socket.send_string("{} {}".format(topic, messagedata))
-    time.sleep(0.2)
-
+    messagedata = math.sin(i/100)
+    print("{} {}".format(i, messagedata))
+    socket.send_string("{} {}".format(i, messagedata))
+    mess_per_sec = 200.0
+    time.sleep(1.0/mess_per_sec)
+    i += 1
 
