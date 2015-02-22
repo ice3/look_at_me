@@ -1,5 +1,4 @@
 import zmq
-import sys
 import time
 import math
 import reac
@@ -19,19 +18,14 @@ def react(mess):
     print(mess)
     globals()["freq"] = float(mess["data"])
 
-a, l = reac.get_background_io_loop(react)
-a.start()
 
 i = 0.0
 
-try:
+with reac.reac(react):
     while True:
         messagedata = math.sin(float(freq)/5 * i/100)
         # print("{} {} {}".format(i, messagedata, freq))
         socket.send_string("{} {}".format(i, messagedata))
-        mess_per_sec = 200.0
+        mess_per_sec = 500.0
         time.sleep(1.0/mess_per_sec)
         i += 1
-except KeyboardInterrupt:
-    l.stop()
-    a.join()

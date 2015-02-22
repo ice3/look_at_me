@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 import zmq
 from zmq.eventloop import ioloop, zmqstream
 import threading
@@ -17,9 +19,15 @@ socket.connect("tcp://localhost:{}".format(port))
 topicfilter = "".encode()
 socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
-def get_background_io_loop(f):
-	stream_pull = zmqstream.ZMQStream(socket)
-	stream_pull.on_recv(f)
-	l = ioloop.IOLoop.instance()
-	a = threading.Thread(None, l.start, None)
-	return a, l
+@contextmanager
+def reac(f):
+	try:
+		stream_pull = zmqstream.ZMQStream(socket)
+		stream_pull.on_recv(f)
+		l = ioloop.IOLoop.instance()
+		a = threading.Thread(None, l.start, None)
+		a.start()
+		yield None
+	finally:
+		l.stop()
+		a.join()
