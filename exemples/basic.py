@@ -1,7 +1,7 @@
 import zmq
 import time
 import math
-import reac
+from src.lib import reac
 
 port = "5556"
 context = zmq.Context()
