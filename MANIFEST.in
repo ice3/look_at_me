@@ -1,1 +1,2 @@
 include *.md
+recursive-include look_at_me *.html *.js *.css
