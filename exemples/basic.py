@@ -1,6 +1,6 @@
 import time
 import math
-from look_at_me import control_me, look_at_me
+from look_at_me import ControlMe, LookAtMe
 
 def update_freq(mess):
     mess = mess[0]
@@ -13,11 +13,12 @@ def update_freq(mess):
 freq = 10
 i = 0.0
 
-with control_me.reac_with(update_freq):
+lam = LookAtMe()
+with ControlMe.reac_with(update_freq):
     while True:
         data = math.sin(float(freq)/5 * i)
         msg = "{} {}".format(i, data)
-        look_at_me.push(msg)
+        lam.push(msg)
         
         mess_per_sec = 100.0
         time.sleep(1.0/mess_per_sec)

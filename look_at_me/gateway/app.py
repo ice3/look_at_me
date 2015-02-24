@@ -10,7 +10,6 @@ from flask.ext.socketio import SocketIO, emit
 
 import zmq.green as zmq
 # import zmq
-
 app = Flask(__name__)
 app.debug = False
 app.config['SECRET_KEY'] = 'secret!'
@@ -79,8 +78,11 @@ def reverse_gateway(mess):
     socket_emit.send_string(json.dumps(mess))
     print("sent control")
 
-if __name__ == '__main__':
+def main():
     try: 
         socketio.run(app, host="0.0.0.0")
     except KeyboardInterrupt:
         socket_emit.close()
+
+if __name__ == '__main__':
+    main()

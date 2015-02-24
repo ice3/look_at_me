@@ -1,12 +1,13 @@
 import zmq
 
-port = "5556"
-context = zmq.Context()
-socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:{}".format(port))
+class LookAtMe():
+    def __init__(self):
+        self.port = "5556"
+        self.context = zmq.Context()
+        self.socket = self.context.socket(zmq.PUB)
+        self.socket.bind("tcp://*:{}".format(self.port))
 
-
-def push(msg):
-    """ sends a data on ZMQ
-    """
-    socket.send_string(msg)
+    def push(self, msg):
+        """ sends a data on ZMQ
+        """
+        self.socket.send_string(msg)
