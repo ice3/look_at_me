@@ -1,9 +1,6 @@
 import time
 import math
-from src.lib import control_me, look_at_me
-
-
-
+from look_at_me import control_me, look_at_me
 
 def update_freq(mess):
     mess = mess[0]
