@@ -17,6 +17,9 @@ socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
 @contextmanager
 def reac_with(f):
+    """ Runtime loop calling the f function each time 
+    a ZMQ message is received. 
+    """
     try:
         stream_pull = zmqstream.ZMQStream(socket)
         stream_pull.on_recv(f)
@@ -25,5 +28,6 @@ def reac_with(f):
         a.start()
         yield None
     finally:
+        # we kill the thread when we finish
         l.stop()
         a.join()
