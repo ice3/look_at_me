@@ -45,7 +45,6 @@ def messages_gateway():
 
     """
     while True:
-        t = time.time()
         t = time.time() 
         res = []
         while time.time() - t < 0.2:
