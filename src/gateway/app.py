@@ -35,42 +35,42 @@ socket_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
 
 def messages_gateway():
-	while True:
-		t = time.time()
-		res = []
-		while time.time() - t < 0.2:
-			m = socket_receive.recv_string()
-			m = m.decode()
-			
-			if m == 'quit':
-				print 'exiting.'
-				break
+    while True:
+        t = time.time()
+        res = []
+        while time.time() - t < 0.2:
+            m = socket_receive.recv_string()
+            print(m)
+            m = m.decode()
+            
+            if m == 'quit':
+                print 'exiting.'
+                break
 
-			index, temp = m.split(" ")
-			res.append([time.time(), float(temp)])
-		socketio.emit("graph", {"datas": res}, namespace='/test')
+            index, temp = m.split(" ")
+            res.append([time.time(), float(temp)])
+        socketio.emit("graph", {"datas": res}, namespace='/test')
+
+thread = Thread(target=messages_gateway)
+thread.start()
 
 @app.route("/")
 def index():
-	global thread
-	if not thread:
-		thread = Thread(target=messages_gateway)
-		thread.start()
-	return render_template('index.html')
+    return render_template('index.html')
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-	emit('my response', {'data': 'Connected', 'count': 0})
-	emit("graph", {"data":"5"})
+    emit('my response', {'data': 'Connected', 'count': 0})
+    emit("graph", {"data":"5"})
 
 @socketio.on("control", namespace="/test")
 def control_var(mess):
-	print(mess)
-	socket_emit.send_string(json.dumps(mess))
-	print("sent control")
+    print(mess)
+    socket_emit.send_string(json.dumps(mess))
+    print("sent control")
 
 if __name__ == '__main__':
-	try: 
-	    socketio.run(app, host="0.0.0.0")
-	except KeyboardInterrupt:
-		socket_emit.close()
+    try: 
+        socketio.run(app, host="0.0.0.0")
+    except KeyboardInterrupt:
+        socket_emit.close()
