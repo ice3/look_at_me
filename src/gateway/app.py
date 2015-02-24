@@ -35,12 +35,21 @@ socket_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
 
 def messages_gateway():
+    """ Gateway between ZMQ and socketIO. 
+    Messages from ZMQ are buffered for some time then 
+    the list is sent by socketIO. This is necessary for performance 
+    issues. 
+
+    Messages are sent as json and time since Epoch in milliseconds is added. 
+    This is necessary to be parsed in javascript...
+
+    """
     while True:
         t = time.time()
+        t = time.time() 
         res = []
         while time.time() - t < 0.2:
             m = socket_receive.recv_string()
-            print(m)
             m = m.decode()
             
             if m == 'quit':
