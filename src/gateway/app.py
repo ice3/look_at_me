@@ -48,8 +48,9 @@ def messages_gateway():
                 break
 
             index, temp = m.split(" ")
-            res.append([time.time(), float(temp)])
-        socketio.emit("graph", {"datas": res}, namespace='/test')
+            res.append([time.time()*1000, float(temp)])
+        if res:
+            socketio.emit("graph", {"datas": res}, namespace='/test')
 
 thread = Thread(target=messages_gateway)
 thread.start()
