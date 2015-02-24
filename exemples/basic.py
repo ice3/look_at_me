@@ -1,17 +1,11 @@
-import zmq
 import time
 import math
-from src.lib import reac
-
-port = "5556"
-context = zmq.Context()
-socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:{}".format(port))
+from src.lib import control_me, look_at_me
 
 
 
-freq = 10
-def react(mess):
+
+def update_freq(mess):
     mess = mess[0]
     mess = mess.decode()
     mess = eval(mess)
@@ -19,13 +13,15 @@ def react(mess):
     globals()["freq"] = float(mess["data"])
 
 
+freq = 10
 i = 0.0
 
-with reac.reac(react):
+with control_me.reac_with(update_freq):
     while True:
-        messagedata = math.sin(float(freq)/5 * i/100)
-        # print("{} {} {}".format(i, messagedata, freq))
-        socket.send_string("{} {}".format(i, messagedata))
-        mess_per_sec = 500.0
+        data = math.sin(float(freq)/5 * i)
+        msg = "{} {}".format(i, data)
+        look_at_me.push(msg)
+        
+        mess_per_sec = 100.0
         time.sleep(1.0/mess_per_sec)
-        i += 1
+        i += 0.01
