@@ -38,6 +38,12 @@ So I decided to create _look at me / control me_ a simple logging / visualizatio
 
 ## Installation - requirements
 
+ * From sources:
+  * Clone the repo;
+  * Run ```pip install -r requirements.txt```
+
+ * From PyPi:
+  ``` pip install --user look_at_me ```
 
 ## How it works
  * Send data to a gateway
