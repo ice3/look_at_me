@@ -4,7 +4,6 @@ import zmq
 from zmq.eventloop import ioloop, zmqstream
 import threading
 
-
 port = "9999"
 
 
@@ -14,6 +13,7 @@ socket = context.socket(zmq.SUB)
 socket.connect("tcp://localhost:{}".format(port))
 topicfilter = "".encode()
 socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
+
 
 @contextmanager
 def reac_with(f):
