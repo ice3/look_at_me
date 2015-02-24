@@ -42,10 +42,9 @@ def messages_gateway():
 
     Messages are sent as json and time since Epoch in milliseconds is added. 
     This is necessary to be parsed in javascript...
-
     """
     while True:
-        t = time.time() 
+        t = time.time()
         res = []
         while time.time() - t < 0.2:
             m = socket_receive.recv_string()
@@ -73,7 +72,9 @@ def test_connect():
     emit("graph", {"data":"5"})
 
 @socketio.on("control", namespace="/test")
-def control_var(mess):
+def reverse_gateway(mess):
+    """ Sends on ZMQ messages received from socketIO
+    """
     print(mess)
     socket_emit.send_string(json.dumps(mess))
     print("sent control")
