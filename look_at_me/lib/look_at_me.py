@@ -10,4 +10,9 @@ class LookAtMe():
     def push(self, msg):
         """ sends a data on ZMQ
         """
-        self.socket.send_string(msg)
+        self.socket.send_multipart(["data", msg])
+
+    def config(self, msg):
+        """ sends config data
+        """
+        self.socket.send_mutipart(["config", msg])
