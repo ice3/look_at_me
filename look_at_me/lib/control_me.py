@@ -11,13 +11,13 @@ class ControlMe():
     socket = context.socket(zmq.SUB)
     socket.connect("tcp://localhost:{}".format(port))
     topicfilter = "".encode()
-    socket.setsockopt(zmq.SUBSCRIBE, topicfilter) 
+    socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
     @classmethod
     @contextmanager
     def reac_with(cls, f):
-        """ Runtime loop calling the f function each time 
-        a ZMQ message is received. 
+        """ Runtime loop calling the f function each time
+        a ZMQ message is received.
         """
         try:
             stream_pull = zmqstream.ZMQStream(cls.socket)
