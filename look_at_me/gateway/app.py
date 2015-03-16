@@ -27,34 +27,42 @@ s = "tcp://127.0.0.1:{}".format(port_emit)
 socket_emit.bind(s)
 
 
-socket_receive = context.socket(zmq.SUB)
-socket_receive.connect("tcp://localhost:{}".format(port_receive))
-topicfilter = "".encode()
-socket_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
+data_receive = context.socket(zmq.SUB)
+data_receive.connect("tcp://localhost:{}".format(port_receive))
+topicfilter = "data".encode()
+data_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
+
+config_receive = context.socket(zmq.SUB)
+config_receive.connect("tcp://localhost:{}".format(port_receive))
+topicfilter = "config".encode()
+config_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
+
+def now_milliseconds():
+   return int(time.time() * 1000)
 
 
 def messages_gateway():
-    """ Gateway between ZMQ and socketIO. 
-    Messages from ZMQ are buffered for some time then 
-    the list is sent by socketIO. This is necessary for performance 
-    issues. 
+    """ Gateway between ZMQ and socketIO.
+    Messages from ZMQ are buffered for some time then
+    the list is sent by socketIO. This is necessary for performance
+    issues.
 
-    Messages are sent as json and time since Epoch in milliseconds is added. 
+    Messages are sent as json and time since Epoch in milliseconds is added.
     This is necessary to be parsed in javascript...
     """
     while True:
         t = time.time()
         res = []
-        while time.time() - t < 0.2:
-            m = socket_receive.recv_string()
+        while time.time() - t < 0.05:
+            m = data_receive.recv_multipart()[1]
             m = m.decode()
-            
+            print(m)
             if m == 'quit':
                 print 'exiting.'
                 break
 
             index, temp = m.split(" ")
-            res.append([time.time()*1000, float(temp)])
+            res.append([now_milliseconds(), float(temp)])
         if res:
             socketio.emit("graph", {"datas": res}, namespace='/test')
 
@@ -79,7 +87,7 @@ def reverse_gateway(mess):
     print("sent control")
 
 def main():
-    try: 
+    try:
         socketio.run(app, host="0.0.0.0")
     except KeyboardInterrupt:
         socket_emit.close()
