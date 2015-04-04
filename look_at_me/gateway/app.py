@@ -12,6 +12,7 @@ from flask.ext.socketio import SocketIO, emit
 ioloop.install()
 
 
+## global config
 port_receive = "5556"
 port_emit = "9999"
 thread = None
