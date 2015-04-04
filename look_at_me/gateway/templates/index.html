@@ -12,7 +12,7 @@
 	<script type="text/javascript" charset="utf-8">
 		var socket
 		$(document).ready(function(){
-			namespace = '/test'; 
+			namespace = '/test';
 			socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 			socket.on('connect', function() {
 			socket.emit('my event', {data: 'I\'m connected!'});
@@ -25,6 +25,9 @@
 			});
 
 			$('#container').highcharts({
+				chart: {
+          			animation: false
+        		},
 				title: {
 					text: "Monthly average temperature",
 					x: -20 //center
@@ -32,20 +35,25 @@
 				subtitle: {
 					text: "Source: WorldClimate.com",
 					x: -20
-				}, 
+				},
                 xAxis: {
                     type: 'datetime',
-                    tickPixelInterval: 150
+                    tickPixelInterval: 150,
+                    labels: {
+           				formatter: function() {
+                			return Highcharts.dateFormat('%H:%M:%S', this.value);
+            						}
+        					}
                 },
 				yAxis: {
 					title: {
-						text:'Temperature (°C)', 
+						text:'Temperature (°C)',
 					},
 					plotLines: [{
-						value: 0, 
-						wodth: 1, 
+						value: 0,
+						wodth: 1,
 						color: '#808080'
-					}], 
+					}],
                     min: -1.5,
                     max: 1.5
                 },
@@ -65,24 +73,23 @@
 				},
 
 				legend: {
-					layout: 'vertical', 
+					layout: 'vertical',
 					align: 'center',
 					borderWidth: 0
 				},
 				series: [
 					{
-						name: 'Tokyo', 
+						name: 'Tokyo',
 						data: []
 
 					}
 				]
-			})	
+			})
 
 			var chart = $('#container').highcharts(),
                 serie = chart.series[0],
 				i = 100 ;
                 start = 0;
-				redraw = false;
 
 			$('#button').click(function () {
 				i = i + (Math.random() * 10 - 5);
@@ -95,11 +102,9 @@
                 for (index = 0; index < msg["datas"].length; ++index) {
                     var len = chart.series[0].data.length;
                     var data = msg["datas"][index];
-                    var date = new Date(data[0]*1000);
-                    serie.addPoint([date, data[1]], false, len > 1000);
+                    serie.addPoint(data, false, len > 500);
                 }
 				chart.redraw();
-                // redraw = true;
 			});
 
             var slider = document.getElementById('slider')
