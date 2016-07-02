@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from collections import deque
 import json
 import time
@@ -18,8 +20,7 @@ port_emit = "9999"
 thread = None
 nb_elem_max = None
 q = deque([], nb_elem_max)
-fps = 5
-
+fps = 10
 
 ####### Flask
 app = Flask(__name__)
@@ -67,13 +68,17 @@ config_receive.connect("tcp://localhost:{}".format(port_receive))
 topicfilter = "config".encode()
 config_receive.setsockopt(zmq.SUBSCRIBE, topicfilter)
 
-
+dt1 = time.time()
 def flush_data():
     """Flush received data every n milliseconds
     """
-    print("flushed", q)
+    global dt1
+    dt2 = time.time()
+    print(dt2-dt1)
+    # print("flushed", q)
     socketio.emit("graph", {"datas": list(q)}, namespace='/test')
     q.clear()
+    dt1 = dt2
 
 def now_milliseconds():
     """ Time in millisecond for javascript
@@ -91,9 +96,11 @@ def recv_data(multipart):
     m = multipart[1]
     m = m.decode()
     index, temp = m.split(" ")
+    # print("receive", index)
     q.append([now_milliseconds(), float(temp)])
 
-flush_loop = ioloop.PeriodicCallback(flush_data, 1000.0/fps)
+dt = 1000.0/fps
+flush_loop = ioloop.PeriodicCallback(flush_data, dt)
 
 stream_data = zmqstream.ZMQStream(data_receive)
 stream_data.on_recv(recv_data)

@@ -16,10 +16,10 @@ i = 0.0
 lam = LookAtMe()
 with ControlMe.reac_with(update_freq):
     while True:
-        data = math.sin(float(freq)/5 * i)
-        msg = "{} {}".format(i, data)
+        data = math.sin(float(freq) * i)
+        msg = {'t': time.time()*1000, 'y': data}
         lam.push(msg)
 
-        mess_per_sec = 30.0
+        mess_per_sec = 100.0
         time.sleep(1.0/mess_per_sec)
         i += 0.01

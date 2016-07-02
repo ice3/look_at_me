@@ -1,3 +1,4 @@
+import json
 import zmq
 
 class LookAtMe():
@@ -10,7 +11,8 @@ class LookAtMe():
     def push(self, msg):
         """ sends a data on ZMQ
         """
-        self.socket.send_multipart(["data", msg])
+        message = ["data", json.dumps(msg)]
+        self.socket.send_multipart(message)
 
     def config(self, msg):
         """ sends config data
