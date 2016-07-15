@@ -3,9 +3,9 @@
 // https://gist.github.com/mbostock/1642874
 /////////////////////////////////////
 
-var n = 2000,
+var n = 50,
     random = d3.random.normal(0, .2),
-    data = d3.range(n).map(function(x){return 0});
+    data = d3.range(n).map(function(x){return 0.5});
 
 var margin = {top: 20, right: 20, bottom: 20, left: 40},
     width = 960 - margin.left - margin.right,
@@ -53,21 +53,19 @@ var path = svg.append("g")
     .attr("d", line);
 
 
-function tick() {
+function tick(new_data) {
 
+  data.push(new_data)
   // redraw the line, and slide it to the left
   path
       .attr("d", line)
       .attr("transform", null)
     .transition()
-      // .duration(10)
+      .duration(20)
       .ease("linear")
       .attr("transform", "translate(" + x(-1) + ",0)")
-      // .each("end", tick);
-  // pop the old data point off the front
 
   if(data.length > n){
     data.shift();
   }
-
 }
