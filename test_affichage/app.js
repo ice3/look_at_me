@@ -33,11 +33,10 @@ function random (low, high) {
 }
 
 var i = 0;
-var refreshRate = 5;
+var refreshRate = 10;
 setInterval(function(){
   io.emit("data", {
-    //data:[Math.cos(i/20), Math.sin(i/20), Math.abs(Math.cos(i/20))*10]
-    data: random(0, 3)
+    data:[Math.cos(i/20), Math.sin(i/20), Math.abs(Math.cos(i/20))*10]
   }); i+=1
 }, 1000.0/refreshRate);
 

@@ -58,9 +58,9 @@ g.selectAll("scatter-dots")
   .attr("cy", function (d) { return y(d[1]); } )
   .attr("r", function(d){return d[2]});
 
-function tick() {
+function tick(data) {
 
-  // redraw the line, and slide it to the left
+  data = data[data.length -1]
   g.selectAll("circle")
     .attr("cx", function(d) {
       return x(data[0]);  // Circle's X
