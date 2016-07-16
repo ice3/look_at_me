@@ -59,8 +59,8 @@ g.selectAll("scatter-dots")
   .attr("r", function(d){return d[2]});
 
 function tick(data) {
+  console.log(data)
 
-  data = data[data.length -1]
   g.selectAll("circle")
     .attr("cx", function(d) {
       return x(data[0]);  // Circle's X

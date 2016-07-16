@@ -1,44 +1,43 @@
 var dict = require("./data_dictionary");
 
-var port = process.env.PORT || 8080;
-
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
+var web = require("./web.js");
+var server = web.server;
+var app = web.app;
 
 var io = require('socket.io').listen(server);
 
+//////////////////////////////////////////////
+// ZMQ
+//////////////////////////////////////////////
+buffer = [];
 
-/////////////////////////////////////////////
-// express
-/////////////////////////////////////////////
+var zmq = require('zmq'),
+    sock_zmq_receive = zmq.socket('sub'),
+    sock_zmq_send = zmq.socket("pub");
 
-app.use(express.static(__dirname+"/client"));
+sock_zmq_receive.connect('tcp://127.0.0.1:5556');
+sock_zmq_receive.subscribe('');
+console.log('Subscriber connected to port 5556');
 
-app.get("/", function(req, res){
-  res.sendFile('index.html', { root: __dirname+"/client"});
+sock_zmq_receive.on('message', function(domain, message) {
+  message = JSON.parse(message.toString('utf8'));
+  buffer.push(message.y);
+
+  if (buffer.length > 200){
+    buffer.pop()
+  }
+  console.log(buffer[buffer.length-1])
 });
-
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
-});
-
-
 
 /////////////////////////////////////////////
 // websockets
 /////////////////////////////////////////////
 
-function random (low, high) {
-    return Math.random() * (high - low) + low;
-}
-
-var i = 0;
+var io = require('socket.io').listen(server);
 var refreshRate = 20;
+
 setInterval(function(){
-  io.emit("data", {
-    data:[Math.cos(i/20), Math.sin(i/20), Math.abs(Math.cos(i/20))*10]
-  }); i+=1
+  io.emit("data", buffer)
 }, 1000.0/refreshRate);
 
 io.sockets.on('connection', function (socket) {
@@ -48,3 +47,4 @@ io.sockets.on('connection', function (socket) {
     console.log("received init, id:", message.id)
   })
 });
+
