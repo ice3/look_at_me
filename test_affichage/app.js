@@ -1,3 +1,4 @@
+var dict = require("./data_dictionary");
 
 var port = process.env.PORT || 8080;
 
