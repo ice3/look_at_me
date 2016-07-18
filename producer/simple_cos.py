@@ -11,7 +11,7 @@ print('Publisher bound to port 5556')
 fps = 10.0
 i = 0.0
 while 1:
-    mess = {"t": time.time()*1000, "y": math.cos(i/100)}
+    mess = {"name": "cos", "data": [math.cos(i/100)]}
     print(mess)
     s.send_multipart(["data ", json.dumps(mess)])
     time.sleep(1.0/fps)

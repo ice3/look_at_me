@@ -19,4 +19,23 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-module.exports = {"app": app, "server": server}
+
+var init = function (dict) {
+  /////////////////////////////////////////////
+  // Start servicies
+  /////////////////////////////////////////////
+
+  app.get("/services/ressources", function(req, res){
+    res.json(dict.getNames());
+  });
+
+  app.get("/services/ressource", function(req, res){
+    if (req.query.name == undefined)
+      res.json([]);
+    else
+      res.json(dict.getData(req.query.name));
+  });
+}
+
+
+module.exports = {"app": app, "server": server, "init": init}

@@ -1,18 +1,28 @@
-console.log("yop");
-
 var socket = io();
 
 socket.on('init', function(message){
   console.log("received after init : ", message.message)
-  socket.emit('init', {id: 123});
+//   socket.emit('init', {id: 123});
 });
 
-var received_data = []
+// socket.on("data", function(message){
+//   received_data.push(message.data);
+// })
 
-socket.on("data", function(message){
-  // console.log(message.data[0]);
-  received_data.push(message.data);
-  tick(message.data);
-  if (received_data.length > 50)
-    received_data.shift();
-})
+
+// get all the data available from the server
+var selectData = document.getElementById ("ressources");
+var dataAvailable = [];
+var updateDataAvailable = function () {
+  $.get( "/services/ressources", function( data ) {
+    dataAvailable = data;
+    selectData.innerHTML = "";
+    for (var idx=0 ; idx<dataAvailable.length ; idx++) {
+      var opt = document.createElement("option");
+      opt.value = dataAvailable[idx];
+      opt.innerHTML = dataAvailable[idx];
+      selectData.appendChild (opt);
+    }
+  });
+}
+updateDataAvailable();
