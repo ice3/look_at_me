@@ -1,13 +1,23 @@
 var socket = io();
 
+var widgets = {};
+
 socket.on('init', function(message){
   console.log("received after init : ", message.message)
 //   socket.emit('init', {id: 123});
 });
 
-// socket.on("data", function(message){
-//   received_data.push(message.data);
-// })
+update_wigets_data = function(message){
+  console.log("in update_wigets_data")
+  for(key in message){
+    widget = widgets[key];
+    if (widget != undefined){
+      widget.update_data(message[key][0][0]);
+    }
+  }
+}
+
+socket.on("update", update_wigets_data)
 
 
 // get all the data available from the server

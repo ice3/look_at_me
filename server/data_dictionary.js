@@ -1,10 +1,13 @@
 var dict = {};
+var newDataAvaillable = false;
 
 module.exports = {
 	"addData" : function (name, data) {
 		if (dict[name] == undefined)
 			dict[name] = [];
 		dict[name].push(data);
+		empty = false;
+		this.newDataAvaillable = true;
 	},
 
 	"getData" : function (name, size) {
@@ -20,5 +23,5 @@ module.exports = {
 
 	"getNames" : function () {
 		return Object.keys(dict);
-	}
+	},
 };

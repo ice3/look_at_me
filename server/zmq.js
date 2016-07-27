@@ -13,7 +13,7 @@ var init = function (dict) {
 	sock_zmq_receive.on('message', function(domain, message) {
 	  message = JSON.parse(message.toString('utf8'));
 	  dict.addData(message.name, message.data);
-	  console.log(message.name, message.data);
+	  // console.log("zmq received", message.name, message.data);
 	});
 };
 

@@ -3,7 +3,6 @@
 /////////////////////////////////////////////
 
 var io = require('socket.io');
-var refreshRate = 20;
 
 var init = function (server) {
 	io = io.listen(server)
@@ -13,7 +12,13 @@ var init = function (server) {
 	  socket.on("init", function(message){
 	    console.log("received init, id:", message.id)
 	  })
+
 	});
 };
 
-module.exports = {"init": init};
+var emit = function(topic, data, client){
+  if(io.sockets != undefined)
+    io.sockets.emit(topic, data);
+}
+
+module.exports = {"init": init, "emit": emit};
