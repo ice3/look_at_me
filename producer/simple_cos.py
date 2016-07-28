@@ -1,18 +1,13 @@
 import time
 import math
-import json
-import zmq
 
-c = zmq.Context()
-s = c.socket(zmq.PUB)
-s.bind("tcp://127.0.0.1:5556")
-print('Publisher bound to port 5556')
+import look_at_me
+
 
 fps = 10.0
 i = 0.0
 while 1:
-    mess = {"name": "cos", "data": [math.cos(i/100)]}
-    print(mess)
-    s.send_multipart(["data ", json.dumps(mess)])
+    x= int(math.cos(i/100)*1000)/100.0
+    look_at_me.send("cos", [x])
     time.sleep(1.0/fps)
     i+=1
