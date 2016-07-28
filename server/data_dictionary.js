@@ -6,7 +6,6 @@ module.exports = {
 		if (dict[name] == undefined)
 			dict[name] = [];
 		dict[name].push(data);
-		empty = false;
 		this.newDataAvaillable = true;
 	},
 
