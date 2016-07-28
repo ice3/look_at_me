@@ -1,8 +1,8 @@
-function TextWidget(id, target){
-  Widget.call(this, id);
-  this.target = target;
-  that = this;
+function TextWidget(data_binding, div_id){
+  Widget.call(this, div_id);
+  $('<p>').attr('id', this.widget_id).appendTo('#'+div_id);
 
+  that = this;
 }
 
 TextWidget.prototype = Object.create(Widget.prototype);
@@ -10,21 +10,12 @@ TextWidget.prototype.constructor = TextWidget;
 
 TextWidget.prototype.update_ui = function() {
   var last = that.data[that.data.length -1];
-  var target = "#" + that.target;
+  var target = "#" + that.widget_id;
   $(target).text(last);
 };
 
-TextWidget.prototype.run = function(){
-  console.log("in run for: ", this)
-  var that = this;
-  console.log(that.refresh_ms)
-  this.interval = setInterval(
-    that.update_ui,
-    that.refresh_ms
-  );
-}
 
 
-tw = new TextWidget("cos", "p_cos");
+tw = new TextWidget("cos", "widget_cos");
 tw.run();
 widgets.cos = tw;

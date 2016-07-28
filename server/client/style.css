@@ -16,6 +16,11 @@ svg {
   shape-rendering: crispEdges;
 }
 
+div {
+  border: 2px solid #333;
+
+}
+
 select {
 	width: 150px;
 }

@@ -27,4 +27,4 @@ var send_data_if_any = function(){
 }
 
 console.log(socket.emit)
-setInterval(send_data_if_any, 200)
+setInterval(send_data_if_any, 20)

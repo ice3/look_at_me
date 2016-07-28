@@ -8,7 +8,6 @@ socket.on('init', function(message){
 });
 
 update_wigets_data = function(message){
-  console.log("in update_wigets_data")
   for(key in message){
     widget = widgets[key];
     if (widget != undefined){
