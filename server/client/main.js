@@ -9,7 +9,7 @@ socket.on('init', function(message){
 
 update_wigets_data = function(message){
   for(key in message){
-    widget = widgets[key];
+    var widget = widgets[key];
     if (widget != undefined){
       widget.update_data(message[key][0][0]);
     }
