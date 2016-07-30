@@ -46,7 +46,7 @@ Widget.prototype.update_data = function(all_data) {
 Widget.prototype.run = function(){
   var that = this;
   this.interval = setInterval(
-    function(){that.update_ui(that)},
+    function(){that.update_ui()},
     that.refresh_ms
   );
 }

@@ -6,10 +6,10 @@ function TextWidget(data_binding, div_id){
 TextWidget.prototype = Object.create(Widget.prototype);
 TextWidget.prototype.constructor = TextWidget;
 
-TextWidget.prototype.update_ui = function(that) {
-  var last = that.data[that.data.length -1];
-  console.log("updated ui for", that.div_id)
-  var target = "#" + that.widget_id;
+TextWidget.prototype.update_ui = function() {
+  var last = this.data[this.data.length -1];
+  console.log("updated ui for", this.div_id)
+  var target = "#" + this.widget_id;
   $(target).text(last);
 };
 
