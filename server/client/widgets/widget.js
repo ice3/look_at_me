@@ -2,7 +2,7 @@ function Widget(div_id){
   this.init(div_id);
   this.init_slider(div_id);
 
-  console.log("nouveau widget avec id : ", this.id);
+  console.log("nouveau widget avec id : ", this.widget_id);
 }
 
 Widget.prototype.init = function(div_id){

@@ -4,7 +4,7 @@ import math
 import look_at_me
 
 
-fps = 10.0
+fps = 30.0
 i = 0.0
 while 1:
     x= int(math.cos(i/100)*1000)/100.0

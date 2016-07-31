@@ -8,7 +8,6 @@ TextWidget.prototype.constructor = TextWidget;
 
 TextWidget.prototype.update_ui = function() {
   var last = this.data[this.data.length -1];
-  console.log("updated ui for", this.div_id)
   var target = "#" + this.widget_id;
   $(target).text(last);
 };
