@@ -1,7 +1,5 @@
 var socket = io();
 
-var widgets = {};
-
 socket.on('init', function(message){
   console.log("received after init : ", message.message)
 //   socket.emit('init', {id: 123});
@@ -9,10 +7,13 @@ socket.on('init', function(message){
 
 update_wigets_data = function(message){
   for(key in message){
-    var widget = widgets[key];
-    if (widget != undefined){
+    var widgets_ = widgets.get(key);
+    if (widgets_ === undefined)
+      return ;
+
+    widgets_.forEach(function(widget){
       widget.update_data(message[key][0][0]);
-    }
+    });
   }
 }
 

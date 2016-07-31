@@ -16,8 +16,8 @@ TextWidget.prototype.update_ui = function() {
 
 tw = new TextWidget("cos", "widget_cos");
 tw.run();
-widgets.cos = tw;
+widgets.add("cos", tw);
 
 tw2 = new TextWidget("sin", "widget_sin");
 tw2.run();
-widgets.sin = tw2;
+widgets.add("sin", tw2);
