@@ -14,6 +14,9 @@ Widget.prototype.init = function(div_id){
   this.slider_value_id = this.slider_id + "_value";
 
   this.data = [];
+  this.nb_points_displayed = 50;
+  this.suppressed = 0;
+
   this.refresh_ms = 500;
 }
 
@@ -22,7 +25,7 @@ Widget.prototype.init_slider = function(div_id){
 
   // slider box
   $("#" + div_id).append('<div id="' + this.slider_box_id + '"></div>')
-  $("#" + div_id).append('<span id="' + this.slider_value_id + '"></span>')
+  $("#" + div_id).append('<div id="' + this.slider_value_id + '"></div>')
   refresh_value = "Refresh rate: " + that.refresh_ms + " ms";
   $("#" + that.slider_value_id).text(refresh_value);
 
@@ -41,6 +44,12 @@ Widget.prototype.init_slider = function(div_id){
 
 Widget.prototype.update_data = function(all_data) {
   this.data.push(all_data);
+  this.suppressed = 0;
+  while (this.data.length > this.nb_points_displayed){
+    this.data = this.data.slice(1);
+    this.suppressed+=1;
+  }
+  // if(this.div_id==="lw_cos") console.log(this.data);
 };
 
 Widget.prototype.run = function(){

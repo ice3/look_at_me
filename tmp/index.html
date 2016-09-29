@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- http://bl.ocks.org/simenbrekken/6634070 -->
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .graph .axis {
+            stroke-width: 1;
+        }
+
+        .graph .axis .tick line {
+            stroke: black;
+        }
+
+        .graph .axis .tick text {
+            fill: black;
+            font-size: 0.7em;
+        }
+
+        .graph .axis .domain {
+            fill: none;
+            stroke: black;
+        }
+
+        .graph .group {
+            fill: none;
+            stroke: black;
+            stroke-width: 1.5;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="graph"></div>
+
+        <script src="/d3.v4.js"></script>
+        <script>
+        var limit = 90 * 1,
+            cur_nb = 1,
+            duration = 200,
+            now = new Date(Date.now() - duration)
+
+        var width = 500,
+            height = 200
+
+        var groups = {
+            target: {
+                value: 0,
+                color: 'green',
+                data: [0]
+            },
+        }
+
+        var x = d3.scaleTime()
+            .domain([now - (cur_nb - 2), now - duration])
+            .range([0, width])
+
+        var y = d3.scaleLinear()
+            .domain([0, 100])
+            .range([height, 0])
+
+        var line = d3.line()
+            .x(function(d, i) {
+                return x(now - (cur_nb - 1 - i) * duration)
+            })
+            .y(function(d) {
+                return y(d)
+            })
+
+        var svg = d3.select('.graph').append('svg')
+            .attr('class', 'chart')
+            .attr('width', width)
+            .attr('height', height + 50)
+
+        var axis = svg.append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + height + ')')
+            .call(x.axis = d3.axisBottom().scale(x))
+
+        var paths = svg.append('g')
+
+        for (var name in groups) {
+            var group = groups[name]
+            group.path = paths.append('path')
+                .data([group.data])
+                .attr('class', name + '_group')
+                .style('stroke', group.color)
+        }
+
+        function tick() {
+        now = new Date()
+
+            // Add new values
+            for (var name in groups) {
+                var group = groups[name]
+                //group.data.push(group.value) // Real values arrive at irregular intervals
+                for(var i=0; i< 20; i++)
+                    group.data.push(5 + Math.random() * 100)
+                group.path.attr('d', line)
+            }
+
+            // Shift domain
+            x.domain([now - (cur_nb - 2) * duration, now - duration])
+
+            // Slide x-axis left
+            axis.transition()
+                .duration(duration)
+                .call(x.axis)
+
+            // Slide paths left
+            paths.transition()
+                .duration(duration)
+                .attr('transform', 'translate(' + x(now - (cur_nb - 1) * duration) + ')')
+
+            // Remove oldest data point from each group
+            for (var name in groups) {
+                var group = groups[name]
+                while (group.data.length >= limit)
+                    group.data.shift()
+                cur_nb = group.data.length;
+            }
+        }
+
+        setInterval(tick, 100)
+        </script>
+    </body>
+</html>
+LICENSE
