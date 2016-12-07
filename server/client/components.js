@@ -57,17 +57,50 @@ var TextWidget = React.createClass({
 })
 
 
+  data = [
+      {
+    label: 'somethingA',
+          values: [
+              {x: 0, y: 0},
+              {x: 1.3, y: 5},
+              {x: 3, y: 6},
+              {x: 3.5, y: 6.5},
+              {x: 4, y: 6},
+              {x: 4.5, y: 6},
+              {x: 5, y: 7},
+              {x: 5.5, y: 8}
+          ]
+    },
+    {
+    label: 'somethingB',
+          values: [
+              {x: 0, y: 3},
+              {x: 1.3, y: 4},
+              {x: 3, y: 7},
+              {x: 3.5, y: 8},
+              {x: 4, y: 7},
+              {x: 4.5, y: 7},
+              {x: 5, y: 7.8},
+              {x: 5.5, y: 9}
+          ]
+      }
+  ];
+
 var LineChartWidget = React.createClass({
   render: function() {
     return (
-      <LineChart width={600} height={300} data={this.props.data}
-            margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-        <XAxis dataKey="x"/>
-        <YAxis/>
-      </LineChart>
-    );
+      <ScatterPlot
+          data={data}
+          width={400}
+          height={400}
+          margin={{top: 10, bottom: 50, left: 50, right: 10}}
+          tooltipHtml={tooltipScatter}
+          xAxis={{innerTickSize: 6, label: "x-label"}}
+          yAxis={{label: "y-label"}}/>
+    )
   }
 })
+
 
 
 ReactDOM.render(
